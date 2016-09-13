@@ -75,8 +75,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Collectibles\collectKey.cs" />
-    <Compile Include="Assets\Scripts\Collectibles\crystalGeneralBehaviour.cs" />
     <Compile Include="Assets\Scripts\Collectibles\heartGeneralBehaviour.cs" />
     <Compile Include="Assets\Scripts\Controller\controller.cs" />
     <Compile Include="Assets\Scripts\Controller\enemySpawnerBehaviour.cs" />

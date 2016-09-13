@@ -152,7 +152,7 @@ public class revolverGeneralBehaviour : MonoBehaviour {
         {
             startColour -= Time.deltaTime*1.5f;
             endColour -= Time.deltaTime * 1.5f;
-            lineRenderer.SetColors(new Color(1, 1, 1, startColour), new Color(1, 1, 1, endColour));
+            lineRenderer.SetColors(new Color(0.2f, 0.2f, 0.2f, startColour), new Color(0.2f, 0.2f, 0.2f, endColour));
         }
 
         if (startColour <= 0)
