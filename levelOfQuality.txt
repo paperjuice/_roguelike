@@ -1,0 +1,7 @@
+trivial, common, cheap, poor,        --------------   trivial
+
+peculiar, uncommon, abnormal, standard, average, ---- average
+
+admirable, excellent, exquisite --------------------- exquisite
+
+priceless, cherished, Luxurious --------------------- luxurious

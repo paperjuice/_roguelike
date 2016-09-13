@@ -1,0 +1,1 @@
+-changed the camera so it rotates with the mouse instead of rotation towards mouse

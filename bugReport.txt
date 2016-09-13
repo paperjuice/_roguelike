@@ -1,0 +1,4 @@
+-sa schimb culoarea la ground
+-cifrele de dmg sa se instantieze pr o pozitie random pe inamic
+-dmg-ul sa fie intre doua variabile
+-
