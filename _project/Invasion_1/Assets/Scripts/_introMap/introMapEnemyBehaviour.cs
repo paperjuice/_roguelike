@@ -17,7 +17,7 @@ public class introMapEnemyBehaviour : MonoBehaviour {
         anim.SetTrigger("move");
         if (Vector3.Distance(transform.position, player.transform.position) < 70f)
         {
-            transform.position += Time.deltaTime * 20f * transform.forward;
+            transform.position += Time.deltaTime * 30f * transform.forward;
         }
     }
 }

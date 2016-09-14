@@ -23,7 +23,7 @@ public class enemySts : MonoBehaviour {
     public float enemyHP;
     private float saved_enemyHp;
 
-
+    private float randomBloodSize=0f;
 
     void Awake()
     {
@@ -60,10 +60,14 @@ public class enemySts : MonoBehaviour {
 
     void EnemyHit()
     {
+
         if (isHit)
         {
+            randomBloodSize = Random.Range(0.5f, 3f);
             Instantiate(bloodSplash, transform.position, transform.rotation);
+            
             Instantiate(bloodSplatter[Random.Range(0, bloodSplatter.Length)], bloodSplatter[Random.Range(0, bloodSplatter.Length)].transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z), bloodSplatter[Random.Range(0, bloodSplatter.Length)].transform.rotation = Quaternion.Euler(90f, Random.Range(0f,360f), 0f));
+            bloodSplatter[Random.Range(0, bloodSplatter.Length)].transform.localScale = new Vector3(randomBloodSize, randomBloodSize, 1 );
 
             isHit = false;
         }

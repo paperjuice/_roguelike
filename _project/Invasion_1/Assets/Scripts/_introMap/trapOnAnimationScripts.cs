@@ -18,7 +18,7 @@ public class trapOnAnimationScripts : MonoBehaviour {
     {
         if (col.gameObject.tag == "enemy")
         {
-            print("yesasd");
+           // print("yesasd");
             col.gameObject.GetComponent<enemySts>().enemyHP = 0f;
         }
     }

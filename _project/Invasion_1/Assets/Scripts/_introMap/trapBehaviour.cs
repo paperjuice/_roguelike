@@ -12,7 +12,7 @@ public class trapBehaviour : MonoBehaviour {
         if (col.gameObject.tag == "enemy")
         {
             anim.SetTrigger("trigger");
-            print("asd");
+            //print("asd");
         }
     }
 
