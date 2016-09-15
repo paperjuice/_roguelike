@@ -14,14 +14,7 @@ public class trapOnAnimationScripts : MonoBehaviour {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "enemy")
-        {
-           // print("yesasd");
-            col.gameObject.GetComponent<enemySts>().enemyHP = 0f;
-        }
-    }
+   
 
 
     void OnHitTheWall()

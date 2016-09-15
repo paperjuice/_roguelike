@@ -1,0 +1,66 @@
+Initialize engine version: 5.4.0b24 (09bef7938b56)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 960 (ID=0x1401)
+    Vendor:   NVIDIA
+    VRAM:     1965 MB
+Default GameObject Tag: prop already registered
+ 
+(Filename:  Line: 88)
+
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  1.224 seconds
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\_Work\_PaperjuiceInc\_Projects\_clear_invasion\_git\Builds\10\10_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+The referenced script on this Behaviour (Game Object 'crystal_2') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'crystal_3') is missing!
+ 
+(Filename:  Line: 1656)
+
+UnloadTime: 6.789459 ms
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 2afc -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.205120 ms
+
+Unloading 30 unused Assets to reduce memory usage. Loaded Objects now: 1244.
+Total: 0.919682 ms (FindLiveObjects: 0.061760 ms CreateObjectMapping: 0.039360 ms MarkObjects: 0.713602 ms  DeleteObjects: 0.104000 ms)
+
+3 | 1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+3 | 2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+3 | 3
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+3 | 4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+3 | 5
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class enemySts : MonoBehaviour {
+
+    [SerializeField] private GameObject hpFill;
+
     [SerializeField] private float chanceToGetWeapon;
     [SerializeField] private GameObject[] bloodSplatter;
     [SerializeField] private GameObject heart;
@@ -44,6 +47,7 @@ public class enemySts : MonoBehaviour {
     {
         Death();
         EnemyHit();
+        GUI_sts();
     }
 
     void Death()
@@ -90,5 +94,9 @@ public class enemySts : MonoBehaviour {
             Instantiate(weaponDrops[Random.Range(0, weaponDrops.Length)], transform.position, transform.rotation);
         }
     }
-    
+
+    void GUI_sts()
+    {
+        hpFill.transform.localScale = new Vector3((enemyHP / saved_enemyHp), 1f, 1f);
+    }
 }

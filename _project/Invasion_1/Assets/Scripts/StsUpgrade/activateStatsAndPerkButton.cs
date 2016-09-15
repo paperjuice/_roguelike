@@ -14,20 +14,24 @@ public class activateStatsAndPerkButton : MonoBehaviour {
     {
         if (primarySts.statPoints > 0)
         {
-            statsButton.gameObject.SetActive(true);
+           // statsButton.gameObject.SetActive(true);
+            statsButton.GetComponent<SpriteRenderer>().color = Color.red;
         }
         else
         {
-            statsButton.gameObject.SetActive(false);
+           // statsButton.gameObject.SetActive(false);
+            statsButton.GetComponent<SpriteRenderer>().color = Color.gray;
         }
 
         if (primarySts.perkPoints > 0)
         {
-            perksButton.gameObject.SetActive(true);
+           // perksButton.gameObject.SetActive(true);
+            perksButton.GetComponent<SpriteRenderer>().color = Color.red;
         }
         else
         {
-            perksButton.gameObject.SetActive(false);
+           // perksButton.gameObject.SetActive(false);
+            perksButton.GetComponent<SpriteRenderer>().color = Color.gray;
         }
     }
 }
