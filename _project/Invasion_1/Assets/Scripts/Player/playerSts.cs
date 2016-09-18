@@ -167,11 +167,11 @@ public class playerSts : MonoBehaviour {
             savedXp -= Time.deltaTime * 2f;
             currentXp += Time.deltaTime * 2f;
 
-            xp_fill.color = Color.Lerp(xp_fill.color, Color.white, Time.deltaTime * 15f);
+            xp_fill.color = Color.Lerp(xp_fill.color, new Color32(255,49,62,255), Time.deltaTime * 15f);
         }
         else
         {
-            xp_fill.color = Color.Lerp(xp_fill.color, Color.gray, Time.deltaTime*3f);
+            xp_fill.color = Color.Lerp(xp_fill.color, new Color32(0, 49, 62, 255), Time.deltaTime*3f);
         }
 
         //level up
