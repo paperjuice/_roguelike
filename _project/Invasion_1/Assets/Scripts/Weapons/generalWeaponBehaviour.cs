@@ -5,7 +5,7 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
     private Rigidbody rigid;
     private GameObject player;
-    private playerSts playerSts;
+    private playerSts _playerSts;
     private primarySts primarySts;
     private GameObject hand;
     private GameObject[] weapons;
@@ -54,7 +54,7 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
         weapons = GameObject.FindGameObjectsWithTag("weapon");
         player = GameObject.FindGameObjectWithTag("Player");
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
         primarySts = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<primarySts>();
         hand = GameObject.FindGameObjectWithTag("hand");
     }
@@ -124,9 +124,9 @@ public class generalWeaponBehaviour : MonoBehaviour {
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             statsPanel.gameObject.SetActive(false);
 
-            playerSts.playerHP = primarySts.savedHP + weaponHP;
-            playerSts.playerDMG = primarySts.savedDMG + weaponDMG;
-            playerSts.playerENERGY = primarySts.savedENERGY + weaponENERGY;
+            _playerSts.playerHP = primarySts.savedHP + weaponHP;
+            _playerSts.playerDMG = primarySts.savedDMG + weaponDMG;
+            _playerSts.playerENERGY = primarySts.savedENERGY + weaponENERGY;
 
             playerSts.saved_weaponHP = weaponHP;
             playerSts.saved_weaponDMG = weaponDMG;

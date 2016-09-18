@@ -94,6 +94,9 @@
     <Compile Include="Assets\Scripts\Player\playerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\playerSts.cs" />
     <Compile Include="Assets\Scripts\Props\propBehaviour.cs" />
+    <Compile Include="Assets\Scripts\StsUpgrade\Perks\collectPerk.cs" />
+    <Compile Include="Assets\Scripts\StsUpgrade\Perks\perks.cs" />
+    <Compile Include="Assets\Scripts\StsUpgrade\Perks\perksController.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\Primary\primarySts.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\Primary\upgradePrimaryStsButtonBehaviour.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\activateStatsAndPerkButton.cs" />

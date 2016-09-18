@@ -26,12 +26,12 @@ public class bulletGeneralBehaviour : MonoBehaviour {
     {
         if (col.gameObject.tag == "enemy")
         {
-            col.gameObject.GetComponent<enemySts>().enemyHP -= playerSts.playerDMG;
+            col.gameObject.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg(); 
             _camera.SetTrigger("shake");
 
             col.gameObject.GetComponent<enemySts>().isHit = true;
 
-            DmgText.text = playerSts.playerDMG.ToString("N1");
+            DmgText.text = playerSts.CalculatedDmg().ToString("N1");
             Instantiate(DmgText, col.gameObject.transform.position, DmgText.transform.rotation);
 
             Destroy(gameObject);

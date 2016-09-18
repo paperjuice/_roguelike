@@ -6,13 +6,15 @@ public class enemySts : MonoBehaviour {
 
     [SerializeField] private GameObject hpFill;
 
-    [SerializeField] private float chanceToGetWeapon;
+    [SerializeField] private float magicFind;
     [SerializeField] private GameObject[] bloodSplatter;
     [SerializeField] private GameObject heart;
+    [SerializeField] private GameObject[] perkTokens;
     [SerializeField] private GameObject[] weaponDrops;
     [SerializeField] private GameObject bloodSplash;
     [SerializeField] private GameObject deadBody;
 
+    private perks _perks;
     private GameObject[] spawnPoints;
     private List<GameObject> listOfSpawnPoints;
     private int randomSpawnPoint;
@@ -20,8 +22,10 @@ public class enemySts : MonoBehaviour {
     private playerSts player;
     private enemyMeleeGeneralBehaviour enemyMeleeGeneralBehaviour;
 
-    private int randomCollectibleChance;
+    private float randomCollectibleChance;
     private float randomWeaponChance;
+    private float randomPerkChance;
+
     public bool isHit;
     public float enemyHP;
     private float saved_enemyHp;
@@ -30,6 +34,7 @@ public class enemySts : MonoBehaviour {
 
     void Awake()
     {
+        _perks = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<perks>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
         enemyMeleeGeneralBehaviour = GetComponent<enemyMeleeGeneralBehaviour>();
     }
@@ -54,8 +59,9 @@ public class enemySts : MonoBehaviour {
     {
         if (enemyHP <= 0)
         {
-            CollectibleDrop();
+            HearthDrop();
             WeaponDrop();
+            PerkDrop();
             Instantiate(deadBody, transform.position += Vector3.up, transform.rotation);
             Destroy(gameObject);
             player.savedXp += 1 * controller.dungeonLevel;
@@ -77,24 +83,34 @@ public class enemySts : MonoBehaviour {
         }
     }
 
-    void CollectibleDrop()
+    void HearthDrop()
     {
-        randomCollectibleChance = Random.Range(1,10);
-        if (randomCollectibleChance == 1)
+        randomCollectibleChance = Random.Range(1f,100f);
+        if (randomCollectibleChance <= _perks.MagicFind())
         {
-            Instantiate(heart, transform.position, transform.rotation);
+            Instantiate(heart, transform.position += new Vector3(0f, 0.5f, 0f), transform.rotation);
         }
     }
 
     void WeaponDrop()
     {
         randomWeaponChance = Random.Range(1f, 100f);
-        if (randomWeaponChance <= chanceToGetWeapon)
+        if (randomWeaponChance <= magicFind + _perks.MagicFind())
         {
-            Instantiate(weaponDrops[Random.Range(0, weaponDrops.Length)], transform.position, transform.rotation);
+            Instantiate(weaponDrops[Random.Range(0, weaponDrops.Length)], transform.position+= new Vector3(0f,0.5f,0f), transform.rotation);
         }
     }
 
+    void PerkDrop()
+    {
+        randomPerkChance = Random.Range(1f, 100f);
+        if (randomPerkChance <= _perks.MagicFind())
+        {
+            Instantiate(perkTokens[Random.Range(0, perkTokens.Length)], transform.position += new Vector3(0f, 0.5f, 0f), transform.rotation);
+        }
+    }
+
+    
     void GUI_sts()
     {
         hpFill.transform.localScale = new Vector3((enemyHP / saved_enemyHp), 1f, 1f);

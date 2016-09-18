@@ -117,11 +117,10 @@ public class revolverGeneralBehaviour : MonoBehaviour {
         {
             if (raycast.collider.tag == "enemy")
             {
-                raycast.collider.GetComponent<enemySts>().enemyHP -= playerSts.playerDMG;
-
+                raycast.collider.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg();
                 raycast.collider.GetComponent<enemySts>().isHit = true;
 
-                DmgText.text = playerSts.playerDMG.ToString("N1");
+                DmgText.text = playerSts.CalculatedDmg().ToString("N1");
                 Instantiate(DmgText, DmgText.transform.position = new Vector3(raycast.point.x+Random.Range(-1f,1f), raycast.point.y + Random.Range(-1f, 1f), raycast.point.z + Random.Range(-1f, 1f)), transform.rotation);
                 
                 _camera.SetTrigger("shake");
@@ -141,8 +140,7 @@ public class revolverGeneralBehaviour : MonoBehaviour {
             {
                 lineRenderer.SetPosition(1, ray.origin + ray.direction * 20f);
             }
-
-
+            
         }
     }
 
@@ -152,7 +150,7 @@ public class revolverGeneralBehaviour : MonoBehaviour {
         {
             startColour -= Time.deltaTime*1.5f;
             endColour -= Time.deltaTime * 1.5f;
-            lineRenderer.SetColors(new Color(0.2f, 0.2f, 0.2f, startColour), new Color(0.2f, 0.2f, 0.2f, endColour));
+            lineRenderer.SetColors(new Color(1f, 1f, 1f, startColour), new Color(1f, 1f, 1f, endColour));
         }
 
         if (startColour <= 0)

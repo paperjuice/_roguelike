@@ -25,13 +25,18 @@ public class primarySts : MonoBehaviour {
 
 
     [Header("GUI")]
+    [SerializeField] TextMesh level_txt;
+    [SerializeField] TextMesh xp_txt;
     [SerializeField] TextMesh hp_txt;
     [SerializeField] TextMesh dmg_txt;
     [SerializeField] TextMesh energy_txt;
-    [SerializeField] TextMesh statPoint_txt;
-
+    [SerializeField] TextMesh hpReg_txt;
+    [SerializeField] TextMesh crtDmg_txt;
+    [SerializeField] TextMesh energyReg_txt;
+    
+    
     [Header("Saved Sts")]
-    private playerSts playerSts;
+    private playerSts _playerSts;
     public float savedHP;
     public float savedHPReg;
 
@@ -44,7 +49,7 @@ public class primarySts : MonoBehaviour {
 
     void Awake()
     {
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
     }
     
 
@@ -54,22 +59,28 @@ public class primarySts : MonoBehaviour {
 
 
         savedHP = 21 + (playerHP_level * upgradePotency_HP);
-        savedHPReg = 0.1f + (playerHP_level * upgradePotency_HPReg) + playerSts.Heart_heal();
+        savedHPReg = 0.1f + (playerHP_level * upgradePotency_HPReg) + _playerSts.Heart_heal();
 
         savedDMG = 21 + (playerDMG_level * upgradePotency_DMG);
-        savedCritDMG = 2 + (playerDMG_level * upgradePotency_CritDMG);
+        savedCritDMG = 0.5f + (playerDMG_level * upgradePotency_CritDMG);
         
         savedENERGY = 21 + (playerENERGY_level * upgradePotency_ENERGY);
-        savedENERGYReg = 5f + (playerENERGY_level * upgradePotency_ENERGYReg) + playerSts.Heart_heal(); 
+        savedENERGYReg = 5f + (playerENERGY_level * upgradePotency_ENERGYReg) + _playerSts.Heart_heal(); 
     }
 
     void GUI_sts()
     {
-        hp_txt.text = playerSts.playerHP.ToString("N1");
-        dmg_txt.text = playerSts.playerDMG.ToString("N1");
-        energy_txt.text = playerSts.playerENERGY.ToString("N1");
+        level_txt.text = "Level: " + playerSts.level.ToString("N0");
+        xp_txt.text = "Experience: " + playerSts.currentXp.ToString("N0") + "/" + _playerSts.maxXp.ToString("N0");
 
-        statPoint_txt.text = "Points left to spend:\n" + statPoints;
+        hp_txt.text = "Health: " + _playerSts.playerHP.ToString("N1");
+        dmg_txt.text = "Damage:" + _playerSts.playerDMG.ToString("N1");
+        energy_txt.text = "Energy: " + _playerSts.playerENERGY.ToString("N1");
+
+        hpReg_txt.text = "Health Regen: " + savedHPReg.ToString("N1")+ "/s";
+        energyReg_txt.text = "Energy Regen: " + savedENERGYReg.ToString("N1") + "/s";
+
+        crtDmg_txt.text = "Crit Damage: " + (savedCritDMG*100 ).ToString("N1")+"%";
     }
 
 

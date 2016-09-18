@@ -4,6 +4,8 @@ using System.Collections;
 public class playerSts : MonoBehaviour {
 
 
+    private float finalDmg;
+
     public static float saved_weaponDMG;
     public static float saved_weaponENERGY;
     public static float saved_weaponHP;
@@ -21,16 +23,17 @@ public class playerSts : MonoBehaviour {
     [Header("Level")]
     public static float currentXp;
     public float savedXp;
-    private float maxXp = 20f;
+    public float maxXp = 20f;
     
-    private static float level;
+    public static float level = 1f;
 
     //we get the tag of the gameObj that we want to scale for hp and energy representation
     private Transform hp_fill;
     private Transform energy_fill;
     private SpriteRenderer xp_fill;
 
-    private primarySts primarySts;
+    private primarySts _primarySts;
+    private perks _perks;
 
 
     //heart heal
@@ -51,7 +54,8 @@ public class playerSts : MonoBehaviour {
         hp_fill = GameObject.FindGameObjectWithTag("hp_fill").transform;
         energy_fill = GameObject.FindGameObjectWithTag("energy_fill").transform;
         xp_fill = GameObject.FindGameObjectWithTag("xp_fill").GetComponent<SpriteRenderer>();
-        primarySts = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<primarySts>();
+        _primarySts = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<primarySts>();
+        _perks = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<perks>();
     }
 
     IEnumerator Start()
@@ -96,12 +100,12 @@ public class playerSts : MonoBehaviour {
     {
         if (currentPlayerHP < playerHP)
         {
-            currentPlayerHP += primarySts.savedHPReg * Time.deltaTime;
+            currentPlayerHP += _primarySts.savedHPReg * Time.deltaTime;
         }
 
         if (currentPlayerENERGY < playerENERGY)
         {
-            currentPlayerENERGY += primarySts.savedENERGYReg * Time.deltaTime;
+            currentPlayerENERGY += _primarySts.savedENERGYReg * Time.deltaTime;
         }
 
         currentPlayerHP = Mathf.Clamp(currentPlayerHP,0f , playerHP);
@@ -124,7 +128,7 @@ public class playerSts : MonoBehaviour {
         if (heartHealing>0)
         {
             heartHeal_currentTime += Time.deltaTime;
-            regFromHeart =  (primarySts.savedHP+primarySts.savedENERGY)/2 * 0.1f * heartHealing;
+            regFromHeart =  (_primarySts.savedHP+ _primarySts.savedENERGY)/2 * 0.1f * heartHealing;
 
             if (heartHeal_currentTime > heartHeal_maxTime)
             {
@@ -157,6 +161,7 @@ public class playerSts : MonoBehaviour {
 
     void LevelUp()
     {
+        //gain the xp
         if (savedXp > 0)
         {
             savedXp -= Time.deltaTime * 2f;
@@ -169,17 +174,20 @@ public class playerSts : MonoBehaviour {
             xp_fill.color = Color.Lerp(xp_fill.color, Color.gray, Time.deltaTime*3f);
         }
 
-
+        //level up
         if (currentXp > maxXp)
         {
+            level++;
+
             maxXp = 20f +(level * 2f);
             currentXp = 0f;
             //currentXp += savedXp;
 
-            primarySts.statPoints += 3f;
-            primarySts.perkPoints += 1f;
+            primarySts.playerDMG_level += 1f;
+            primarySts.playerENERGY_level += 1f;
+            primarySts.playerHP_level += 1f;
 
-            print(primarySts.statPoints + " | " + primarySts.perkPoints);
+           // print(primarySts.statPoints + " | " + primarySts.perkPoints);
         }
     }
     
@@ -190,6 +198,24 @@ public class playerSts : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }
+
+
+    //here we calculate the total dmg the player will deal
+    public float CalculatedDmg()
+    {
+        float chanceToCrit = 0f;
+        finalDmg = playerDMG;
+
+        chanceToCrit = Random.Range(1f,100f);
+        if (chanceToCrit<=_perks.CritChance())
+        {
+            finalDmg = finalDmg + finalDmg * _primarySts.savedCritDMG;
+        }
+
+        finalDmg = Random.Range(finalDmg - (0.1f * finalDmg), finalDmg + (0.1f * finalDmg));
+
+        return finalDmg;
     }
     
 }

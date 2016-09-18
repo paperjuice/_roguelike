@@ -4,26 +4,31 @@ using System.Collections;
 public class equipWeaponButton : MonoBehaviour {
 
 	[SerializeField] private generalWeaponBehaviour generalWeaponBehaviour;
+    [SerializeField] private KeyCode key;
     private GameObject[] weapons;
     
 
-    void OnMouseDown()
+    void Update()
     {
-        weapons = GameObject.FindGameObjectsWithTag("weapon");
-        foreach (GameObject weapon in weapons)
+        if (Input.GetKeyDown(key))
         {
-            weapon.GetComponent<generalWeaponBehaviour>().isEquipped = false;
+            weapons = GameObject.FindGameObjectsWithTag("weapon");
+
+            foreach (GameObject weapon in weapons)
+            {
+                weapon.GetComponent<generalWeaponBehaviour>().isEquipped = false;
+            }
+            generalWeaponBehaviour.isEquipped = true;
         }
-        generalWeaponBehaviour.isEquipped = true;
     }
 
-    void OnMouseEnter()
-    {
-        GetComponent<SpriteRenderer>().color = Color.green;
-    }
+    //void OnMouseEnter()
+    //{
+    //    GetComponent<SpriteRenderer>().color = Color.green;
+    //}
 
-    void OnMouseExit()
-    {
-        GetComponent<SpriteRenderer>().color = Color.white;
-    }
+    //void OnMouseExit()
+    //{
+    //    GetComponent<SpriteRenderer>().color = Color.white;
+    //}
 }
