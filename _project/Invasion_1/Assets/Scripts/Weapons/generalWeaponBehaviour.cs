@@ -5,8 +5,7 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
     private Rigidbody rigid;
     private GameObject player;
-    private playerSts _playerSts;
-    private primarySts primarySts;
+    private playerStats _playerStats;
     private GameObject hand;
     private GameObject[] weapons;
 
@@ -19,27 +18,22 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
 
     [Header("Stats Text")]
-    [SerializeField] private TextMesh text_hp;
     [SerializeField] private TextMesh text_dmg;
-    [SerializeField] private TextMesh text_energy;
 
-    
+
     [Header("Quality")]
     [SerializeField] private TextMesh textQuality;
     private int qualityLevel;
     private float randomQuality;
 
-    [Header("Roll chances")]
-    [SerializeField] private float numberOfStatPointsAvailable;
-    [SerializeField] private float HpRollChance;
-    [SerializeField] private float DmgRollChance;
-    [SerializeField] private float EnergyRollChance;
 
+    [Header("1-LongSword | 2-Revolver | 3-Staff | 4-Shield | 5-Autogun")]
+    [SerializeField][Range(1,5)] private int weaponId;
 
     [Header("Stats Rolled")]
-    public float weaponHP;
-    public float weaponDMG;
-    public float weaponENERGY;
+    public float weapon_energyCost;
+    float weapon_weaponDamage = 0;
+    
 
     private float random;
 
@@ -54,19 +48,18 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
         weapons = GameObject.FindGameObjectsWithTag("weapon");
         player = GameObject.FindGameObjectWithTag("Player");
-        _playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
-        primarySts = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<primarySts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
         hand = GameObject.FindGameObjectWithTag("hand");
     }
 
-          
+
 
     void Start()
     {
-        transform.rotation = Quaternion.Euler(0,Random.Range(0f,360f),0);
-        rigid.AddForce(new Vector3(0,1f,1f) * 8000f);
+        transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+        rigid.AddForce(new Vector3(0, 1f, 1f) * 8000f);
 
-        Roll_stats();
+        RollTheDamageBasedOnID();
     }
 
     void Update()
@@ -82,37 +75,9 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
     void Rotate()
     {
-        transform.RotateAround(rotateAroundObj.transform.position,Vector3.up, Time.deltaTime * 20f);
-
+        transform.RotateAround(rotateAroundObj.transform.position, Vector3.up, Time.deltaTime * 20f);
     }
-
-    void Roll_stats()
-    {
-        numberOfStatPointsAvailable = LevelOFQuality();
-
-        while (numberOfStatPointsAvailable > 0)
-        {
-            random = Random.Range(1, HpRollChance + DmgRollChance + EnergyRollChance);
-            if (random >= 1 && random < HpRollChance)
-            {
-                weaponHP++;
-                numberOfStatPointsAvailable--;
-            }
-            else if (random >= HpRollChance && random < (HpRollChance + DmgRollChance))
-            {
-                weaponDMG++;
-                numberOfStatPointsAvailable--;
-            }
-            else if (random >= (HpRollChance + DmgRollChance) && random < (HpRollChance + DmgRollChance + EnergyRollChance)) 
-            {
-                weaponENERGY++;
-                numberOfStatPointsAvailable--;
-
-            }
-        }
-    }
-
-
+    
     void Equip_weapon()
     {
         if (isEquipped)
@@ -120,17 +85,10 @@ public class generalWeaponBehaviour : MonoBehaviour {
             rigid.isKinematic = true;
             GetComponent<BoxCollider>().enabled = false;
             transform.parent = hand.transform;
-            transform.localPosition = new Vector3(0f,0f,0f);
+            transform.localPosition = new Vector3(0f, 0f, 0f);
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             statsPanel.gameObject.SetActive(false);
-
-            _playerSts.playerHP = primarySts.savedHP + weaponHP;
-            _playerSts.playerDMG = primarySts.savedDMG + weaponDMG;
-            _playerSts.playerENERGY = primarySts.savedENERGY + weaponENERGY;
-
-            playerSts.saved_weaponHP = weaponHP;
-            playerSts.saved_weaponDMG = weaponDMG;
-            playerSts.saved_weaponENERGY = weaponENERGY;
+            _playerStats.player_weaponDamage = weapon_weaponDamage;
         }
         else
         {
@@ -153,57 +111,23 @@ public class generalWeaponBehaviour : MonoBehaviour {
 
     void Show_stats_as_text()
     {
-        if (playerSts.saved_weaponHP - weaponHP < 0)
+        if (_playerStats.player_weaponDamage - weapon_weaponDamage < 0)
         {
-            text_hp.text = "+" + (-playerSts.saved_weaponHP + weaponHP).ToString("N0");
-            text_hp.color = Color.green;
-        }
-        else if (playerSts.saved_weaponHP - weaponHP > 0)
-        {
-            text_hp.text = "-" + (playerSts.saved_weaponHP - weaponHP).ToString("N0");
-            text_hp.color = Color.red;
-        }
-        else if (playerSts.saved_weaponHP - weaponHP == 0)
-        {
-            text_hp.text =  (playerSts.saved_weaponHP - weaponHP).ToString("N0");
-            text_hp.color = Color.gray;
-        }
-
-
-
-        if (playerSts.saved_weaponDMG - weaponDMG < 0)
-        {
-            text_dmg.text = "+" + (-playerSts.saved_weaponDMG + weaponDMG).ToString("N0");
+            text_dmg.text = "+ Damage: " + (-_playerStats.player_weaponDamage + weapon_weaponDamage).ToString("N1");
             text_dmg.color = Color.green;
         }
-        else if (playerSts.saved_weaponDMG - weaponDMG > 0)
+        else if (_playerStats.player_weaponDamage - weapon_weaponDamage > 0)
         {
-            text_dmg.text = "-" + (playerSts.saved_weaponDMG - weaponDMG).ToString("N0");
+            text_dmg.text = "- Damage: " + (_playerStats.player_weaponDamage - weapon_weaponDamage).ToString("N1");
             text_dmg.color = Color.red;
         }
-        else if (playerSts.saved_weaponDMG - weaponDMG == 0)
+        else if (_playerStats.player_weaponDamage - weapon_weaponDamage == 0)
         {
-            text_dmg.text = (playerSts.saved_weaponDMG - weaponDMG).ToString("N0");
+            text_dmg.text = "Damage: " + (_playerStats.player_weaponDamage - weapon_weaponDamage).ToString("N1");
             text_dmg.color = Color.gray;
         }
-
-
-        if (playerSts.saved_weaponENERGY - weaponENERGY < 0)
-        {
-            text_energy.text = "+" + (-playerSts.saved_weaponENERGY + weaponENERGY).ToString("N0");
-            text_energy.color = Color.green;
-        }
-        else if (playerSts.saved_weaponENERGY - weaponENERGY > 0)
-        {
-            text_energy.text = "-" + (playerSts.saved_weaponENERGY - weaponENERGY).ToString("N0");
-            text_energy.color = Color.red;
-        }
-        else if (playerSts.saved_weaponENERGY - weaponENERGY == 0)
-        {
-            text_energy.text = (playerSts.saved_weaponENERGY - weaponENERGY).ToString("N0");
-            text_energy.color = Color.gray;
-        }
     }
+
 
     void Distance_between_weapons()
     {
@@ -219,42 +143,262 @@ public class generalWeaponBehaviour : MonoBehaviour {
         }
     }
 
+    void RollTheDamageBasedOnID()
+    {
+        switch (weaponId)
+        {
+            case 1:
+                LongSword_RolledWeaponDamage();
+                break;
+            case 2:
+                Revolver_RolledWeaponDamage();
+                break;
+            case 3:
+                Staff_RolledWeaponDamage();
+                break;
+            case 4:
+                Shield_RolledWeaponDamage();
+                break;
+            case 5:
+                Autogun_RolledWeaponDamage();
+                break;
+        }
+    }
 
-    float LevelOFQuality()
+
+    void LongSword_RolledWeaponDamage()
     {
         randomQuality = Random.Range(1, 1000f);
-        float statsPoint = 0;
+        
 
         if (randomQuality >= 1 && randomQuality < 650)
         {
             qualityLevel = 1;
             textQuality.text = "Trivial Quality";
             textQuality.color = Color.gray;
-            statsPoint = 5f;
+
+            weapon_weaponDamage = Random.Range(5f,10f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(10f, 12f) + (0.5f * controller.dungeonLevel);
         }
         else if (randomQuality >= 650 && randomQuality < 900)
         {
             qualityLevel = 2;
             textQuality.text = "Average Quality";
             textQuality.color = new Color32(46, 172, 189, 255);
-            statsPoint = 7f;
+
+            //+4
+            weapon_weaponDamage = Random.Range(9f, 14f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(9f, 11f) + (0.5f * controller.dungeonLevel);
         }
         else if (randomQuality >= 900 && randomQuality < 996)
         {
             qualityLevel = 3;
             textQuality.text = "Exquisite Quality";
             textQuality.color = new Color32(29, 221, 46, 255);
-            statsPoint = 9f;
+
+            //+5
+            weapon_weaponDamage = Random.Range(14f, 19f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(8f, 10f) + (0.5f * controller.dungeonLevel);
         }
         else if (randomQuality >= 996 && randomQuality <= 1000)
         {
             qualityLevel = 4;
             textQuality.text = "Luxurious Quality";
             textQuality.color = new Color32(236, 46, 2, 255);
-            statsPoint = 13f;
+
+            //+6
+            weapon_weaponDamage = Random.Range(20f, 25f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(7f, 9f) + (0.5f * controller.dungeonLevel);
         }
-        //print(statsPoint.ToString());
-        return statsPoint;
-        
+
     }
+
+    void Revolver_RolledWeaponDamage()
+    {
+        randomQuality = Random.Range(1, 1000f);
+
+
+        if (randomQuality >= 1 && randomQuality < 650)
+        {
+            qualityLevel = 1;
+            textQuality.text = "Trivial Quality";
+            textQuality.color = Color.gray;
+
+            weapon_weaponDamage = Random.Range(5f, 10f) + (3f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(3f, 4f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 650 && randomQuality < 900)
+        {
+            qualityLevel = 2;
+            textQuality.text = "Average Quality";
+            textQuality.color = new Color32(46, 172, 189, 255);
+
+            //+4
+            weapon_weaponDamage = Random.Range(9f, 14f) + (3f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(2.5f, 3.5f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 900 && randomQuality < 996)
+        {
+            qualityLevel = 3;
+            textQuality.text = "Exquisite Quality";
+            textQuality.color = new Color32(29, 221, 46, 255);
+
+            //+5
+            weapon_weaponDamage = Random.Range(14f, 19f) + (3f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(2f, 3f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 996 && randomQuality <= 1000)
+        {
+            qualityLevel = 4;
+            textQuality.text = "Luxurious Quality";
+            textQuality.color = new Color32(236, 46, 2, 255);
+
+            //+6
+            weapon_weaponDamage = Random.Range(20f, 25f) + (3f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(1.5f, 2.5f) + (0.2f * controller.dungeonLevel);
+        }
+
+    }
+
+    void Staff_RolledWeaponDamage()
+    {
+        randomQuality = Random.Range(1, 1000f);
+
+
+        if (randomQuality >= 1 && randomQuality < 650)
+        {
+            qualityLevel = 1;
+            textQuality.text = "Trivial Quality";
+            textQuality.color = Color.gray;
+
+            weapon_weaponDamage = Random.Range(12f, 15f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(10f, 12f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 650 && randomQuality < 900)
+        {
+            qualityLevel = 2;
+            textQuality.text = "Average Quality";
+            textQuality.color = new Color32(46, 172, 189, 255);
+
+            //+4
+            weapon_weaponDamage = Random.Range(16f, 19f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(9f, 11f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 900 && randomQuality < 996)
+        {
+            qualityLevel = 3;
+            textQuality.text = "Exquisite Quality";
+            textQuality.color = new Color32(29, 221, 46, 255);
+
+            //+5
+            weapon_weaponDamage = Random.Range(21f, 24f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(8f, 10f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 996 && randomQuality <= 1000)
+        {
+            qualityLevel = 4;
+            textQuality.text = "Luxurious Quality";
+            textQuality.color = new Color32(236, 46, 2, 255);
+
+            //+6
+            weapon_weaponDamage = Random.Range(26f, 29f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(7f, 9f) + (0.5f * controller.dungeonLevel);
+        }
+
+    }
+
+    void Shield_RolledWeaponDamage()
+    {
+        randomQuality = Random.Range(1, 1000f);
+
+
+        if (randomQuality >= 1 && randomQuality < 650)
+        {
+            qualityLevel = 1;
+            textQuality.text = "Trivial Quality";
+            textQuality.color = Color.gray;
+
+            weapon_weaponDamage = Random.Range(5f, 10f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(8f, 10f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 650 && randomQuality < 900)
+        {
+            qualityLevel = 2;
+            textQuality.text = "Average Quality";
+            textQuality.color = new Color32(46, 172, 189, 255);
+
+            //+4
+            weapon_weaponDamage = Random.Range(9f, 14f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(7f, 9f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 900 && randomQuality < 996)
+        {
+            qualityLevel = 3;
+            textQuality.text = "Exquisite Quality";
+            textQuality.color = new Color32(29, 221, 46, 255);
+
+            //+5
+            weapon_weaponDamage = Random.Range(14f, 19f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(6f, 8f) + (0.5f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 996 && randomQuality <= 1000)
+        {
+            qualityLevel = 4;
+            textQuality.text = "Luxurious Quality";
+            textQuality.color = new Color32(236, 46, 2, 255);
+
+            //+6
+            weapon_weaponDamage = Random.Range(20f, 25f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(5f, 7f) + (0.5f * controller.dungeonLevel);
+        }
+
+    }
+
+    void Autogun_RolledWeaponDamage()
+    {
+        randomQuality = Random.Range(1, 1000f);
+
+
+        if (randomQuality >= 1 && randomQuality < 650)
+        {
+            qualityLevel = 1;
+            textQuality.text = "Trivial Quality";
+            textQuality.color = Color.gray;
+
+            weapon_weaponDamage = Random.Range(2f, 4f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(2f, 3f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 650 && randomQuality < 900)
+        {
+            qualityLevel = 2;
+            textQuality.text = "Average Quality";
+            textQuality.color = new Color32(46, 172, 189, 255);
+
+            //+4
+            weapon_weaponDamage = Random.Range(5f, 7f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(1.5f, 2.5f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 900 && randomQuality < 996)
+        {
+            qualityLevel = 3;
+            textQuality.text = "Exquisite Quality";
+            textQuality.color = new Color32(29, 221, 46, 255);
+
+            //+5
+            weapon_weaponDamage = Random.Range(8f, 10f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(1f, 2f) + (0.2f * controller.dungeonLevel);
+        }
+        else if (randomQuality >= 996 && randomQuality <= 1000)
+        {
+            qualityLevel = 4;
+            textQuality.text = "Luxurious Quality";
+            textQuality.color = new Color32(236, 46, 2, 255);
+
+            //+6
+            weapon_weaponDamage = Random.Range(11f, 13f) + (0.5f * controller.dungeonLevel);
+            weapon_energyCost = Random.Range(0.5f, 1.5f) + (0.2f * controller.dungeonLevel);
+        }
+
+    }
+
 }

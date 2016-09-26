@@ -5,6 +5,7 @@ public class gateBehaviour : MonoBehaviour {
 
 
     [SerializeField] GameObject openedDoorLightEffect;
+    [SerializeField] private string levelName;
 
     private Animator anim;
     private GameObject player;
@@ -22,8 +23,11 @@ public class gateBehaviour : MonoBehaviour {
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 15)
             {
-                anim.SetTrigger("open");
-                openedDoorLightEffect.gameObject.SetActive(true);
+                if (anim != null)
+                    anim.SetTrigger("open");
+
+                if (openedDoorLightEffect!=null)
+                    openedDoorLightEffect.gameObject.SetActive(true);
                 isOpened = true;
             }
         }
@@ -33,7 +37,8 @@ public class gateBehaviour : MonoBehaviour {
     {
         if (col.gameObject == player)
         {
-            SceneManager.LoadScene("Game_1");
+            SceneManager.LoadScene(levelName);
+            controller.dungeonLevel++;
         }
 
     }

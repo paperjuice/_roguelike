@@ -3,7 +3,7 @@ using System.Collections;
 
 public class enemyMeleeGeneralBehaviour : MonoBehaviour {
     
-    private playerSts player;
+    private playerStats player;
     private GameObject[] enemies;
     private GameObject[] walls;
     private bool isActive;
@@ -28,7 +28,7 @@ public class enemyMeleeGeneralBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
     }
 
 

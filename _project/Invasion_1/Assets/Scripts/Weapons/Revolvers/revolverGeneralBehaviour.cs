@@ -5,7 +5,7 @@ public class revolverGeneralBehaviour : MonoBehaviour {
 
     private Animator _camera;
     private generalWeaponBehaviour generalWeaponBehaviour;
-    private playerSts playerSts;
+    private playerStats _playerStats;
     private Animator anim;
     private bool isOnCooldown;
     //alternativly the right guns shots then the left gun
@@ -34,19 +34,24 @@ public class revolverGeneralBehaviour : MonoBehaviour {
     [SerializeField] private float cooldown=0.5f;
     private float currentCooldown=0f;
 
-    [Header("Energy Cost")]
-    [SerializeField] private float energyCost;
-    
+   
+    private float energyCost;
+    private float dmg;
 
 
     void Awake()
     {
         layerMask = LayerMask.GetMask("floor");
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
         lineRenderer = GetComponent<LineRenderer>();
         anim = GetComponent<Animator>();
         generalWeaponBehaviour = GetComponent<generalWeaponBehaviour>();
+    }
+
+    void Start()
+    {
+        energyCost = generalWeaponBehaviour.weapon_energyCost;
     }
 
     void Update()
@@ -62,14 +67,16 @@ public class revolverGeneralBehaviour : MonoBehaviour {
 
     void Attack()
     {
-        if (!isOnCooldown && playerSts.currentPlayerENERGY > energyCost)
+        if (!isOnCooldown && _playerStats.player_currentEnergy > energyCost)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 ActivateLineRendererFade();
                 InstantiateBullet();
-                playerSts.currentPlayerENERGY -= energyCost;
+                _playerStats.player_currentEnergy -= energyCost;
                 isOnCooldown = true;
+                dmg = _playerStats.CalculatedDmg();
+                print(dmg.ToString());
             }
         }
 
@@ -117,10 +124,10 @@ public class revolverGeneralBehaviour : MonoBehaviour {
         {
             if (raycast.collider.tag == "enemy")
             {
-                raycast.collider.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg();
+                raycast.collider.GetComponent<enemySts>().enemyHP -= dmg;
                 raycast.collider.GetComponent<enemySts>().isHit = true;
 
-                DmgText.text = playerSts.CalculatedDmg().ToString("N1");
+                DmgText.text = dmg.ToString("N1");
                 Instantiate(DmgText, DmgText.transform.position = new Vector3(raycast.point.x+Random.Range(-1f,1f), raycast.point.y + Random.Range(-1f, 1f), raycast.point.z + Random.Range(-1f, 1f)), transform.rotation);
                 
                 _camera.SetTrigger("shake");

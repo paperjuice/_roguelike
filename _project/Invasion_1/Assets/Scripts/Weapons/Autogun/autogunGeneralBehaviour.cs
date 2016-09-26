@@ -4,7 +4,7 @@ using System.Collections;
 public class autogunGeneralBehaviour : MonoBehaviour {
 
     private generalWeaponBehaviour generalWeaponBehaviour;
-    private playerSts playerSts;
+    private playerStats _playerStats;
     private Animator _camera;
     [SerializeField] private Animator anim;
     [SerializeField] private GameObject bullet;
@@ -14,8 +14,7 @@ public class autogunGeneralBehaviour : MonoBehaviour {
     private float cooldown;
     private float currentCooldown;
     private bool isOnCooldown = false;
-
-    [SerializeField]
+    
     private float energyCost;
 
 
@@ -23,10 +22,15 @@ public class autogunGeneralBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
         generalWeaponBehaviour = GetComponent<generalWeaponBehaviour>();
     }
 
+    IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.1f);
+        energyCost = generalWeaponBehaviour.weapon_energyCost;
+    }
 
     void Update()
     {
@@ -39,12 +43,13 @@ public class autogunGeneralBehaviour : MonoBehaviour {
     
     void Attack()
     {
-        if (!isOnCooldown && playerSts.currentPlayerENERGY > energyCost)
+        if (!isOnCooldown && _playerStats.player_currentEnergy > energyCost)
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 anim.SetTrigger("attack");
-                playerSts.currentPlayerENERGY -= energyCost;
+                _playerStats.player_currentEnergy -= energyCost;
+                print(energyCost.ToString());
                 isOnCooldown = true;
                 Instantiate(bullet, anim.transform.position += transform.forward *1.1f, anim.transform.rotation);
             }

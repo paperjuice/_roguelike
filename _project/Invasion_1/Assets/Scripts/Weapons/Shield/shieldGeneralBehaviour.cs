@@ -4,7 +4,7 @@ using System.Collections;
 public class shieldGeneralBehaviour : MonoBehaviour {
 
     private generalWeaponBehaviour generalWeaponBehaviour;
-    private playerSts playerSts;
+    private playerStats _playerStats;
     private Animator _camera;
 
     [SerializeField]private Animator anim; 
@@ -14,16 +14,21 @@ public class shieldGeneralBehaviour : MonoBehaviour {
     private float currentCooldown;
     private bool isOnCooldown = false;
 
-    [SerializeField] private float energyCost;
+    private float energyCost;
+    private float dmg;
 
 
     void Awake()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
         generalWeaponBehaviour = GetComponent<generalWeaponBehaviour>();
     }
 
+    void Start()
+    {
+        energyCost = generalWeaponBehaviour.weapon_energyCost;
+    }
 
     void Update()
     {
@@ -37,12 +42,12 @@ public class shieldGeneralBehaviour : MonoBehaviour {
     {
         if (col.gameObject.tag == "enemy")
         {
-            col.gameObject.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg();
+            col.gameObject.GetComponent<enemySts>().enemyHP -= dmg;
             _camera.SetTrigger("shake");
 
             col.gameObject.GetComponent<enemySts>().isHit = true;
 
-            DmgText.text = playerSts.CalculatedDmg().ToString("N1");
+            DmgText.text = dmg.ToString("N1");
             Instantiate(DmgText, col.gameObject.transform.position, DmgText.transform.rotation);
         }
 
@@ -55,13 +60,14 @@ public class shieldGeneralBehaviour : MonoBehaviour {
 
     void Attack()
     {
-        if (!isOnCooldown && playerSts.currentPlayerENERGY>energyCost)
+        if (!isOnCooldown && _playerStats.player_currentEnergy>energyCost)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 anim.SetTrigger("attack");
-                playerSts.currentPlayerENERGY -= energyCost;
+                _playerStats.player_currentEnergy -= energyCost;
                 isOnCooldown = true;
+                dmg = _playerStats.CalculatedDmg();
             }
         }
 

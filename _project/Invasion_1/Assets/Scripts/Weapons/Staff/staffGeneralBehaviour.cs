@@ -4,7 +4,7 @@ using System.Collections;
 public class staffGeneralBehaviour : MonoBehaviour {
 
 	private generalWeaponBehaviour generalWeaponBehaviour;
-	private playerSts playerSts;
+	private playerStats _playerStats;
 	[SerializeField] private Animator anim;
 
 
@@ -12,18 +12,21 @@ public class staffGeneralBehaviour : MonoBehaviour {
 	private float cooldown;
 	private float currentCooldown;
 	private bool isOnCooldown = false;
-
-	[SerializeField]
+    
 	private float energyCost;
-
 
 
 
 	void Awake()
 	{
-		playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
 		generalWeaponBehaviour = GetComponent<generalWeaponBehaviour>();
 	}
+
+    void Start()
+    {
+        energyCost = generalWeaponBehaviour.weapon_energyCost;
+    }
 
 	void Update()
 	{
@@ -35,12 +38,12 @@ public class staffGeneralBehaviour : MonoBehaviour {
 
     void Attack()
 	{
-		if (!isOnCooldown && playerSts.currentPlayerENERGY > energyCost)
+		if (!isOnCooldown && _playerStats.player_currentEnergy > energyCost)
 		{
 			if (Input.GetKey(KeyCode.Mouse0))
 			{
 				anim.SetTrigger("attack");
-				playerSts.currentPlayerENERGY -= energyCost;
+                _playerStats.player_currentEnergy -= energyCost;
 				isOnCooldown = true;
 			}
 		}

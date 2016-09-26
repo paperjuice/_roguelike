@@ -59,13 +59,13 @@ public class primarySts : MonoBehaviour {
 
 
         savedHP = 21 + (playerHP_level * upgradePotency_HP);
-        savedHPReg = 0.1f + (playerHP_level * upgradePotency_HPReg) + _playerSts.Heart_heal();
+        savedHPReg = 0.1f + (playerHP_level * upgradePotency_HPReg) ;
 
         savedDMG = 21 + (playerDMG_level * upgradePotency_DMG);
         savedCritDMG = 0.5f + (playerDMG_level * upgradePotency_CritDMG);
         
         savedENERGY = 21 + (playerENERGY_level * upgradePotency_ENERGY);
-        savedENERGYReg = 5f + (playerENERGY_level * upgradePotency_ENERGYReg) + _playerSts.Heart_heal(); 
+        savedENERGYReg = 5f + (playerENERGY_level * upgradePotency_ENERGYReg); 
     }
 
     void GUI_sts()

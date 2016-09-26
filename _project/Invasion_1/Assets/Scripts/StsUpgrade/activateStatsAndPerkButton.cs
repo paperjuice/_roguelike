@@ -3,46 +3,40 @@ using System.Collections;
 
 public class activateStatsAndPerkButton : MonoBehaviour {
     
-	[SerializeField] private GameObject perksButton;
-    private Animator anim;
-    private bool isOpened;
+	[SerializeField] private GameObject statsPanel;
+	[SerializeField] private GameObject perksPanel;
+    bool isOpened = false;
 
-    void Awake()
-    {
-        anim = GetComponent<Animator>();
-    }
 
     void Update()
     {
         ActivatePanel();
-
-        if (primarySts.perkPoints > 0)
-        {
-           // perksButton.gameObject.SetActive(true);
-            perksButton.GetComponent<SpriteRenderer>().color = Color.red;
-        }
-        else
-        {
-           // perksButton.gameObject.SetActive(false);
-            perksButton.GetComponent<SpriteRenderer>().color = Color.gray;
-        }
     }
 
     void ActivatePanel()
     {
+        if (!isOpened)
+        {
+            statsPanel.transform.localPosition = new Vector3(-5f, 1.36f, 0f);
+            perksPanel.transform.localPosition = new Vector3(5f, 1.36f, 0f);
+        }
+        else
+        {
+            statsPanel.transform.localPosition = new Vector3(-1.53f, 1.36f, 0f);
+            perksPanel.transform.localPosition = new Vector3(1.61f, 1.276f, 0f);
+        }
+
+
         if (Input.GetKeyDown(KeyCode.C))
         {
             if (isOpened)
             {
                 isOpened = false;
-                anim.SetBool("activate", true);
             }
             else
             {
                 isOpened = true;
-                anim.SetBool("activate", false);
             }
         }
-        
     }
 }

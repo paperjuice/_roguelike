@@ -13,7 +13,10 @@ public class bilboardGUI : MonoBehaviour {
 
     void Update()
     {
-        transform.LookAt(mainCamera.transform.position );
+        if (mainCamera != null)
+        {
+            transform.LookAt(mainCamera.transform.position);
+        }
     }
 
 }

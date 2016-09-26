@@ -18,8 +18,8 @@ public class enemySts : MonoBehaviour {
     private GameObject[] spawnPoints;
     private List<GameObject> listOfSpawnPoints;
     private int randomSpawnPoint;
+    
 
-    private playerSts player;
     private enemyMeleeGeneralBehaviour enemyMeleeGeneralBehaviour;
 
     private float randomCollectibleChance;
@@ -32,15 +32,17 @@ public class enemySts : MonoBehaviour {
 
     private float randomBloodSize=0f;
 
+    
+
     void Awake()
     {
-        _perks = GameObject.FindGameObjectWithTag("primaryStsUpgrade").GetComponent<perks>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _perks = GameObject.FindGameObjectWithTag("Player").GetComponent<perks>();
         enemyMeleeGeneralBehaviour = GetComponent<enemyMeleeGeneralBehaviour>();
     }
 
     IEnumerator Start()
     {
+        enemyHP = EnemyHp_scale();
         saved_enemyHp = enemyHP;
 
         yield return new WaitForSeconds(0.2f);
@@ -64,8 +66,14 @@ public class enemySts : MonoBehaviour {
             PerkDrop();
             Instantiate(deadBody, transform.position += Vector3.up, transform.rotation);
             Destroy(gameObject);
-            player.savedXp += 1 * controller.dungeonLevel;
+            playerStats.player_currentXp += 1 * controller.dungeonLevel;
         }
+    }
+
+    float EnemyHp_scale()
+    {
+        enemyHP = 20f + (controller.dungeonLevel * 8f);
+        return enemyHP;
     }
 
     void EnemyHit()
@@ -97,7 +105,7 @@ public class enemySts : MonoBehaviour {
         randomWeaponChance = Random.Range(1f, 100f);
         if (randomWeaponChance <= magicFind + _perks.MagicFind())
         {
-            Instantiate(weaponDrops[Random.Range(0, weaponDrops.Length)], transform.position+= new Vector3(0f,0.5f,0f), transform.rotation);
+            Instantiate(weaponDrops[Random.Range(0, weaponDrops.Length)], transform.position+= new Vector3(0f,1.5f,0f), transform.rotation);
         }
     }
 
@@ -109,10 +117,16 @@ public class enemySts : MonoBehaviour {
             Instantiate(perkTokens[Random.Range(0, perkTokens.Length)], transform.position += new Vector3(0f, 0.5f, 0f), transform.rotation);
         }
     }
-
     
     void GUI_sts()
     {
         hpFill.transform.localScale = new Vector3((enemyHP / saved_enemyHp), 1f, 1f);
     }
+
+
+    
+
+
+
+
 }

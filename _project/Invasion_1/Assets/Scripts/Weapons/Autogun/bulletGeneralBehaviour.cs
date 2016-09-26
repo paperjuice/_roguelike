@@ -3,8 +3,13 @@ using System.Collections;
 
 public class bulletGeneralBehaviour : MonoBehaviour {
 
+    
     private Animator _camera;
-    private playerSts playerSts;
+    private playerStats _playerStats;
+    private GameObject[] enemies;
+    private GameObject[] props;
+
+    private float dmg;
 
     [SerializeField] private TextMesh DmgText;
     [SerializeField] private float ms;
@@ -14,29 +19,27 @@ public class bulletGeneralBehaviour : MonoBehaviour {
     void Awake()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
+
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
+        props = GameObject.FindGameObjectsWithTag("prop");
+    }
+
+    void Start()
+    {
+        dmg = _playerStats.CalculatedDmg();
     }
 
     void Update()
     {
         transform.position += Time.deltaTime * ms * transform.forward;
+
+        EnemyContact();
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "enemy")
-        {
-            col.gameObject.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg(); 
-            _camera.SetTrigger("shake");
-
-            col.gameObject.GetComponent<enemySts>().isHit = true;
-
-            DmgText.text = playerSts.CalculatedDmg().ToString("N1");
-            Instantiate(DmgText, col.gameObject.transform.position, DmgText.transform.rotation);
-
-            Destroy(gameObject);
-        }
-
+       
         if (col.gameObject.tag == "prop")
         {
             col.gameObject.GetComponent<propBehaviour>().propIsHit = true;
@@ -45,6 +48,29 @@ public class bulletGeneralBehaviour : MonoBehaviour {
         }
     }
 
+
+    void EnemyContact()
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                if (Vector3.Distance(transform.position, enemy.transform.position) < 2f)
+                {
+                    enemy.GetComponent<enemySts>().enemyHP -= dmg;
+                    _camera.SetTrigger("shake");
+
+                    enemy.GetComponent<enemySts>().isHit = true;
+
+                    DmgText.text = dmg.ToString("N1");
+                    Instantiate(DmgText, enemy.transform.position, DmgText.transform.rotation);
+
+                    Destroy(gameObject);
+                }
+            }
+        }
+
+    }
    
 
 }

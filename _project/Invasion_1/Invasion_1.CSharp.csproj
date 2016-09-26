@@ -81,9 +81,9 @@
     <Compile Include="Assets\Scripts\Controller\gateBehaviour.cs" />
     <Compile Include="Assets\Scripts\Controller\mapGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Common\enemyMeleeGeneralBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Common\enemyMeleeOnTriggerDamage.cs" />
     <Compile Include="Assets\Scripts\Enemy\Common\enemyPiecesBehaviour.cs" />
     <Compile Include="Assets\Scripts\Enemy\Common\enemySts.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Common\meleeEnemyAttackBehaviour.cs" />
     <Compile Include="Assets\Scripts\Misc\activateObjectOnClick.cs" />
     <Compile Include="Assets\Scripts\Misc\bilboardGUI.cs" />
     <Compile Include="Assets\Scripts\Misc\bloodStainBehaviour.cs" />
@@ -92,9 +92,10 @@
     <Compile Include="Assets\Scripts\Misc\textFadeOut.cs" />
     <Compile Include="Assets\Scripts\Player\cameraFollowPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\playerMovement.cs" />
+    <Compile Include="Assets\Scripts\Player\playerStats.cs" />
     <Compile Include="Assets\Scripts\Player\playerSts.cs" />
     <Compile Include="Assets\Scripts\Props\propBehaviour.cs" />
-    <Compile Include="Assets\Scripts\StsUpgrade\Perks\collectPerk.cs" />
+    <Compile Include="Assets\Scripts\StsUpgrade\Perks\perkId.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\Perks\perks.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\Perks\perksController.cs" />
     <Compile Include="Assets\Scripts\StsUpgrade\Primary\primarySts.cs" />

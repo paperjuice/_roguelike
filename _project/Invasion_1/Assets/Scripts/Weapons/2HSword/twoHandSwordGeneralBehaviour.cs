@@ -4,7 +4,7 @@ using System.Collections;
 public class twoHandSwordGeneralBehaviour : MonoBehaviour {
 
     private generalWeaponBehaviour generalWeaponBehaviour;
-    private playerSts playerSts;
+    private playerStats _playerStats;
     private int alternativeAttack =1;
     private Animator _camera;
 
@@ -16,16 +16,20 @@ public class twoHandSwordGeneralBehaviour : MonoBehaviour {
     private float currentCooldown;
     private bool isOnCooldown = false;
 
-    [SerializeField] private float energyCost;
-
+    private float energyCost;
+    private float dmg;
 
     void Awake()
     {
-        playerSts = GameObject.FindGameObjectWithTag("Player").GetComponent<playerSts>();
+        _playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<playerStats>();
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
         generalWeaponBehaviour = GetComponent<generalWeaponBehaviour>();
     }
 
+    void Start()
+    {
+        energyCost = generalWeaponBehaviour.weapon_energyCost;
+    }
 
     void Update()
     {
@@ -39,12 +43,12 @@ public class twoHandSwordGeneralBehaviour : MonoBehaviour {
     {
         if (col.gameObject.tag == "enemy")
         {
-            col.gameObject.GetComponent<enemySts>().enemyHP -= playerSts.CalculatedDmg();
+            col.gameObject.GetComponent<enemySts>().enemyHP -= dmg;
             _camera.SetTrigger("shake");
 
             col.gameObject.GetComponent<enemySts>().isHit = true;
 
-            DmgText.text = playerSts.CalculatedDmg().ToString("N1");
+            DmgText.text = dmg.ToString("N1");
             Instantiate(DmgText, col.gameObject.transform.position, DmgText.transform.rotation);
         }
 
@@ -57,10 +61,12 @@ public class twoHandSwordGeneralBehaviour : MonoBehaviour {
 
     void Attack()
     {
-        if (!isOnCooldown && playerSts.currentPlayerENERGY > energyCost)
+        if (!isOnCooldown && _playerStats.player_currentEnergy > energyCost)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
+                dmg = _playerStats.CalculatedDmg();
+
                 if (alternativeAttack == 1)
                 {
                     anim.SetTrigger("attack_1");
@@ -71,8 +77,8 @@ public class twoHandSwordGeneralBehaviour : MonoBehaviour {
                     anim.SetTrigger("attack_2");
                     alternativeAttack = 1;
                 }
-                
-                playerSts.currentPlayerENERGY -= energyCost;
+
+                _playerStats.player_currentEnergy -= energyCost;
                 isOnCooldown = true;
             }
         }
